@@ -34,3 +34,7 @@ w_i= w_i-alpha*( V_train (s_t )  -  V(s_t )  ).x_i
 
 ![image](https://user-images.githubusercontent.com/47190471/232274660-9b054aca-96c1-4598-a18d-a21936149870.png)
 
+
+## note that
+
+This game is depended on the features which we used to learn.
