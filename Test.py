@@ -2,7 +2,7 @@
 """
 Created on Sun May  1 15:14:48 2022
 
-@author: Hamed 
+@author: Hamed
 """
 
 
@@ -23,8 +23,8 @@ def apply_filter(head_mask , kernel1 , body_mask):
     body_mask[np.where(head_mask == 1)] = np.max(body_mask)+1
     return head_mask , body_mask
     
-# create up,down,left,right filter. 
 
+# create up,down,left,right filter. 
 def Return_movment_filters():
     right = np.zeros([3,3])
     right[1,0] = 1
@@ -40,8 +40,8 @@ def Return_movment_filters():
     return right,left,up,down
 
 # create initial enviroment
-
 def create_state():
+    # creating obstacle tensor
     obstacle = np.zeros([20,20])
     obstacle[0 , : ] = 1
     obstacle[: , 0 ] = 1
@@ -53,7 +53,6 @@ def create_state():
     
     
     #creaate head tensor
-    
     head = np.zeros([20,20])
     while(True):
         a = random.randint(4, 16)
@@ -86,7 +85,7 @@ def create_state():
             body[index_head[0]  , index_head[1] - i] =  count
             count-=1
     
-    #food position
+    #locate food
     temp_food = np.zeros([20,20])
     temp_food[np.where(body !=  0 )] = 1
     temp_food[np.where(obstacle !=  0 )] = 1
@@ -102,11 +101,7 @@ def create_state():
 
 
 
-
-
 #check its terminate state    
-# evaluate a state
-
 def check_status(body , obstacle , head):
     if( len((np.where(head * obstacle >= 1))[0]) >= 1 ):
         return -1000        
@@ -120,14 +115,13 @@ def check_status(body , obstacle , head):
     return 0
     
 
-
+#evaluate a state
 def check_columns(head, body , obstacle , food_count , option):
     #length of snake
     value = []
     body_one = len(list(np.where(body != 0)[0]))
     value.append( body_one)
-    
-    
+
     #distance to bondry 
     row,column = np.where(head ==1)
     a,b = np.where(obstacle == 1) # get rows and columns where vlue is less than 42.5
@@ -144,9 +138,10 @@ def check_columns(head, body , obstacle , food_count , option):
             dist = d
     value.append(dist)
     
+    
     #distance to obstacles
     row,column = np.where(head ==1)
-    a,b = np.where(obstacle == 2) # get rows and columns where vlue is less than 42.5
+    a,b = np.where(obstacle == 2) 
     x = zip(a,b)
     b = np.array([a , b ])
     a = np.array([[row,column]])
@@ -157,14 +152,13 @@ def check_columns(head, body , obstacle , food_count , option):
         d = np.sqrt(np.sum(np.square(np.array([row,column])-temp)))
         if d < dist:
             dist = d
-    # create a list with (row,column)
-    value.append(dist)
     
+    value.append(dist)
     
     #distamce to food
     row,column = np.where(head ==1)
-    a,b = np.where(obstacle == 3) # get rows and columns where vlue is less than 42.5
-    x = zip(a,b) # create a list with (row,column)
+    a,b = np.where(obstacle == 3) 
+    x = zip(a,b)
     b = np.array([a , b ])
     a = np.array([[row,column]])
     dist = 87976
@@ -194,9 +188,7 @@ def check_columns(head, body , obstacle , food_count , option):
     
     
     
-     
-#return correct movement   
-    
+#return correct movement
 def correct_movment(body):
     movemnt = []
     movemnt_name = []
@@ -229,18 +221,16 @@ import copy
 
 if __name__ == "__main__" :
     
-    alpha = 0.0000001
+
     dim = 20
     food_count = 0 
     obstacle, body ,  head = create_state()
-    # right,left,up,down  = Return_movment_filters()
-    # operation = [up , down ,left , right]
-    w = np.zeros([1,6])
-    for i in range(1 , 2000):
-        option = 0
+    w = np.load('Weight.npy')
+    option = 0
+    for i in range(1 , 200):
+        # option = 0
             
         operation , movemnt_name = correct_movment(body)
-        # directions = ['up' , 'down' , 'left' , 'right' ]
         max_value = -800
         max_index = 0
         for j in range(len(operation)):     
@@ -281,9 +271,10 @@ if __name__ == "__main__" :
             temp_food[np.where(obstacle ==  0 )] = 1
             temp_food[np.where(body !=  0 )] = 0
             index_not_obstacle = np.where(temp_food == 1 )
-            rnd = random.randint(0, len(index_not_obstacle)-1)
+            rnd = random.randint(0, len(index_not_obstacle[0])-1)
             obstacle[index_not_obstacle[0][rnd] , index_not_obstacle[1][rnd] ] = 3
             food_count +=1
+            print('length of snake: ' , value[0]+1)
         
 
 
@@ -291,8 +282,8 @@ if __name__ == "__main__" :
         # 
         game_value = check_status(body, obstacle, head)
         board_value = check_columns(head, body, obstacle , food_count , option)
-        w = w - alpha * ( np.dot(w , board_value) - game_value) * board_value
-        if option == 50:
+        # w = w - alpha * ( np.dot(w , board_value) - game_value) * board_value
+        if option == 40:
             obstacle, body ,  head = create_state()
         if game_value == -1000:
             obstacle, body ,  head = create_state()
@@ -304,7 +295,7 @@ if __name__ == "__main__" :
             option+=1
             
                     
-        #show our board
+        
         Total_boards =np.zeros([20,20])
         Total_boards[np.where(obstacle == 1)] = 1
         Total_boards[np.where(obstacle == 2)] = 1
@@ -318,7 +309,7 @@ if __name__ == "__main__" :
             # alpha *= 0.1
         # plt.close()
        
-    np.save("Weight.npy" , w)
+    # np.save("Weight.npy" , w)
         
             
         
