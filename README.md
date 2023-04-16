@@ -26,7 +26,7 @@ Learning Game
 	A function that shows current state is terminate or non-terminate state has been developed which return -1000 in case it is terminate state otherwise it returns 0.
 	After any movement weights are being updated based on gradient descent roll.
 
-w_i= w_i-alpha( V_train (s_t )  -  V(s_t )  ).x_i
+w_i= w_i-alpha*( V_train (s_t )  -  V(s_t )  ).x_i
 
 	Go to state 3
 
