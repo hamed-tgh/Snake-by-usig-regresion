@@ -2,7 +2,7 @@
 solving Snake by using regresion concept
 
 
-History
+History:
 
 Snake’s story begins long before it found a mass audience with Nokia. It was first created as a concept in 1976 under the name of Blockage, and was a monochromatic two-player arcade game developed by video games company, Gremlin Interactive.
 
