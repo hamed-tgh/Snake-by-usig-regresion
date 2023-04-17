@@ -1,4 +1,4 @@
-# Snake-by-usig-regresion
+﻿# Snake-by-usig-regresion
 solving Snake by using regresion concept
 
 
@@ -38,3 +38,6 @@ w_i= w_i-alpha*( V_train (s_t )  -  V(s_t )  ).x_i
 ## note that
 
 This game is depended on the features which we used to learn.
+
+
+### this is a test branch
